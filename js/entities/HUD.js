@@ -9,7 +9,7 @@ game.HUD = game.HUD || {};
 
 game.HUD.Container = me.ObjectContainer.extend({
 
-  init: function() {
+  init: function(player) {
     // call the constructor
     this.parent();
 
@@ -22,7 +22,7 @@ game.HUD.Container = me.ObjectContainer.extend({
     // give a name
     this.name = "HUD";
 
-    this.addChild(new game.HUD.ImmunityLevel(30, 30));
+    this.addChild(new game.HUD.ImmunityLevel(30, 30, player));
   }
 });
 
@@ -31,11 +31,8 @@ game.HUD.Container = me.ObjectContainer.extend({
  * a basic HUD item to display score
  */
 game.HUD.ImmunityLevel = me.Renderable.extend({
-  /**
-   * constructor
-   */
-  init: function(x, y) {
-
+  init: function(x, y, player) {
+    this.player = player;
     // call the parent constructor
     // (size does not matter here)
     this.parent(new me.Vector2d(x, y), 10, 10);
@@ -48,14 +45,9 @@ game.HUD.ImmunityLevel = me.Renderable.extend({
     this.floating = true;
   },
 
-  /**
-   * update function
-   */
   update : function () {
-    // we don't do anything fancy here, so just
-    // return true if the score has been updated
-    if (this.immunity !== game.data.immunity) {
-      this.immunity = game.data.immunity;
+    if (this.immunity !== this.player.immunity) {
+      this.immunity = this.player.immunity;
       return true;
     }
     return false;

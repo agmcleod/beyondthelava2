@@ -2,16 +2,10 @@
 /* Game namespace */
 var game = {
 
-  // an object where to store game information
-  data : {
-    immunity : 0
-  },
-
-
   // Run on page load.
-  "onload" : function () {
+  onload : function () {
     // Initialize the video.
-    if (!me.video.init("screen", 768, 640, true, '1')) {
+    if (!me.video.init("screen", 768, 640, true, '1', null)) {
       alert("Your browser does not support HTML5 canvas.");
       return;
     }
@@ -37,11 +31,12 @@ var game = {
   },
 
   // Run on game resources loaded.
-  "loaded" : function () {
+  loaded : function () {
     me.state.set(me.state.MENU, new game.TitleScreen());
-    me.state.set(me.state.PLAY, new game.PlayScreen());
+    this.playScreen = new game.PlayScreen();
+    me.state.set(me.state.PLAY, this.playScreen);
 
     // Start the game.
-    me.state.change(me.state.PLAY);
+    me.state.change(me.state.MENU);
   }
 };
